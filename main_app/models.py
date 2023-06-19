@@ -8,18 +8,31 @@ MEALS = (
 )
 
 # Create your models here.
+class Toy(models.Model):
+  name = models.CharField(max_length=50)
+  color = models.CharField(max_length=20)
+
+  def __str__(self):
+    return self.name
+
+  def get_absolute_url(self):
+    return reverse('toys_detail', kwargs={'pk': self.id})
+
+
 class Finch(models.Model):
   species = models.CharField(max_length=100)
   color = models.CharField(max_length=100)
   wing_span = models.DecimalField(max_digits=3, decimal_places=1, default=1)
   habitat = models.CharField(max_length=100)
   lifespan = models.IntegerField()
+  toys = models.ManyToManyField(Toy)
 
   def __str__(self):
     return self.species
   
   def get_absolute_url(self):
     return reverse('detail', kwargs={'finch_id': self.id})
+
 
 class Feeding(models.Model):
   date = models.DateField('feeding date')
@@ -38,3 +51,4 @@ class Feeding(models.Model):
   
   class Meta:
     ordering = ['-date']
+
